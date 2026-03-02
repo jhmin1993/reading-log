@@ -1,0 +1,38 @@
+---
+layout: default
+---
+
+<h1>{{ page.title }}</h1>
+<p><strong>저자</strong>: {{ page.author }} | <strong>총 {{ page.total_chapters }}장</strong> | 시작: {{ page.start_date }}</p>
+
+{{ content }}
+
+<hr>
+
+<h2>진행 현황</h2>
+
+{% assign book_logs = site.logs | where: "book", page.slug | sort: "date" %}
+{% assign total_read = 0 %}
+{% for log in book_logs %}{% assign total_read = total_read | plus: log.chapters_read %}{% endfor %}
+{% assign pct = total_read | times: 100 | divided_by: page.total_chapters %}
+
+<p><strong>{{ total_read }} / {{ page.total_chapters }}장 완료 ({{ pct }}%)</strong></p>
+
+<h2>독서 기록</h2>
+
+<table>
+<thead>
+<tr><th>날짜</th><th>읽은 장</th><th>챕터</th><th>목표</th><th>메모</th></tr>
+</thead>
+<tbody>
+{% for log in book_logs reversed %}
+<tr>
+  <td>{{ log.date | date: "%m/%d" }}</td>
+  <td>{{ log.chapters_read }}장</td>
+  <td>{{ log.from_chapter }}~{{ log.to_chapter }}</td>
+  <td>{% if log.chapters_read >= 3 %}✅{% else %}❌{% endif %}</td>
+  <td>{{ log.memo }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
