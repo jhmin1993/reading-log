@@ -193,5 +193,7 @@ function logCard(log) {
 }
 
 app.listen(PORT, () => {
-  console.log(`\n✅ 서버 실행 중 → http://localhost:${PORT}\n`);
+  const url = `http://localhost:${PORT}`;
+  console.log(`\n✅ 서버 실행 중 → ${url}\n`);
+  require('child_process').exec(`start ${url}`);
 });
