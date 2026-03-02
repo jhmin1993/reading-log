@@ -4,9 +4,13 @@ layout: default
 
 <h1>{{ page.date | date: "%Y년 %m월 %d일" }} - {{ page.book }}</h1>
 
+{% if page.pages_read %}
+<p><strong>읽은 페이지</strong>: {{ page.pages_read }}p ({{ page.from_page }}~{{ page.to_page }}p)</p>
+<p><strong>목표 달성</strong>: {% if page.pages_read >= 3 %}✅ 달성 ({{ page.pages_read }}p){% else %}❌ 미달성 ({{ page.pages_read }}p / 목표 3p){% endif %}</p>
+{% else %}
 <p><strong>읽은 장</strong>: {{ page.chapters_read }}장 (Chapter {{ page.from_chapter }}~{{ page.to_chapter }})</p>
-
 <p><strong>목표 달성</strong>: {% if page.chapters_read >= 3 %}✅ 달성 ({{ page.chapters_read }}장){% else %}❌ 미달성 ({{ page.chapters_read }}장 / 목표 3장){% endif %}</p>
+{% endif %}
 
 <hr>
 
