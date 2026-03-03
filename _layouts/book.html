@@ -2,57 +2,65 @@
 layout: default
 ---
 
-<h1>{{ page.title }}</h1>
-
-{% if page.pages_per_day %}
-<p><strong>저자</strong>: {{ page.author }} | <strong>하루 {{ page.pages_per_day }}p 목표</strong> | 시작: {{ page.start_date }}</p>
-{% else %}
-<p><strong>저자</strong>: {{ page.author }} | <strong>총 {{ page.total_chapters }}장</strong> | 시작: {{ page.start_date }}</p>
-{% endif %}
-
-{{ content }}
-
-<hr>
-
-<h2>진행 현황</h2>
-
 {% assign book_logs = site.logs | where: "book", page.slug | sort: "date" %}
 {% assign total_read = 0 %}
-
 {% if page.pages_per_day %}
   {% for log in book_logs %}{% assign total_read = total_read | plus: log.pages_read %}{% endfor %}
-  <p><strong>누적 {{ total_read }}p 완료</strong></p>
+  {% assign unit = "p" %}
+  {% assign plan = page.pages_per_day | append: "p/일" %}
 {% else %}
   {% for log in book_logs %}{% assign total_read = total_read | plus: log.chapters_read %}{% endfor %}
-  {% assign pct = total_read | times: 100 | divided_by: page.total_chapters %}
-  <p><strong>{{ total_read }} / {{ page.total_chapters }}장 완료 ({{ pct }}%)</strong></p>
+  {% assign unit = "장" %}
+  {% assign plan = page.chapters_per_day | append: "장/일" %}
 {% endif %}
 
-<h2>독서 기록</h2>
+<a class="back" href="{{ site.baseurl }}/">← 목록으로</a>
 
-<table>
-<thead>
-{% if page.pages_per_day %}
-<tr><th>날짜</th><th>읽은 양</th><th>범위</th><th>목표</th><th>메모</th></tr>
-{% else %}
-<tr><th>날짜</th><th>읽은 장</th><th>챕터</th><th>목표</th><th>메모</th></tr>
-{% endif %}
-</thead>
-<tbody>
-{% for log in book_logs reversed %}
-<tr>
-  <td>{{ log.date | date: "%m/%d" }}</td>
-  {% if page.pages_per_day %}
-  <td>{{ log.pages_read }}p</td>
-  <td>{{ log.from_page }}~{{ log.to_page }}p</td>
-  <td>{% if log.pages_read >= 3 %}✅{% else %}❌{% endif %}</td>
-  {% else %}
-  <td>{{ log.chapters_read }}장</td>
-  <td>{{ log.from_chapter }}~{{ log.to_chapter }}</td>
-  <td>{% if log.chapters_read >= 3 %}✅{% else %}❌{% endif %}</td>
+<div class="book-header">
+  <h1>{{ page.title }}</h1>
+  <div class="meta">
+    <span>{{ page.author }}</span>
+    <span class="badge badge-yellow">{{ plan }}</span>
+    <span>시작일 {{ page.start_date }}</span>
+    <span>누적 <span class="stat">{{ total_read }}</span>{{ unit }}</span>
+  </div>
+  {% if page.content != "" %}
+    <hr>
+    <div class="content">{{ content }}</div>
   {% endif %}
-  <td>{{ log.memo }}</td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
+</div>
+
+<h2>독서 기록 ({{ book_logs | size }}회)</h2>
+
+{% if book_logs.size == 0 %}
+  <p class="empty">아직 기록이 없습니다.</p>
+{% else %}
+  {% assign sorted_logs = book_logs | sort: "date" | reverse %}
+  {% for log in sorted_logs %}
+    {% if log.pages_read %}
+      {% assign read_count = log.pages_read %}
+      {% assign log_unit = "p" %}
+      {% assign range = log.from_page | append: "~" | append: log.to_page | append: "p" %}
+      {% assign achieved = false %}
+      {% if log.pages_read >= 3 %}{% assign achieved = true %}{% endif %}
+    {% else %}
+      {% assign read_count = log.chapters_read %}
+      {% assign log_unit = "장" %}
+      {% assign range = "Ch." | append: log.from_chapter | append: "~" | append: log.to_chapter %}
+      {% assign achieved = false %}
+      {% if log.chapters_read >= 3 %}{% assign achieved = true %}{% endif %}
+    {% endif %}
+  <div class="card">
+    <div class="card-title"><a href="{{ site.baseurl }}/logs/{{ log.slug }}/">{{ log.date | date: "%Y-%m-%d" }}</a></div>
+    <div class="meta">
+      <span>{{ range }}</span>
+      {% if achieved %}
+        <span class="badge badge-green">✅ 달성 ({{ read_count }}{{ log_unit }})</span>
+      {% else %}
+        <span class="badge badge-red">❌ 미달성 ({{ read_count }}{{ log_unit }})</span>
+      {% endif %}
+      {% if log.memo %}<span>{{ log.memo }}</span>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+{% endif %}

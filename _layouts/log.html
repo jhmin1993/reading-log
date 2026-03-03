@@ -2,16 +2,32 @@
 layout: default
 ---
 
-<h1>{{ page.date | date: "%Y년 %m월 %d일" }} - {{ page.book }}</h1>
-
 {% if page.pages_read %}
-<p><strong>읽은 페이지</strong>: {{ page.pages_read }}p ({{ page.from_page }}~{{ page.to_page }}p)</p>
-<p><strong>목표 달성</strong>: {% if page.pages_read >= 3 %}✅ 달성 ({{ page.pages_read }}p){% else %}❌ 미달성 ({{ page.pages_read }}p / 목표 3p){% endif %}</p>
+  {% assign read_count = page.pages_read %}
+  {% assign unit = "p" %}
+  {% assign range = page.from_page | append: "~" | append: page.to_page | append: "p" %}
+  {% assign achieved = false %}
+  {% if page.pages_read >= 3 %}{% assign achieved = true %}{% endif %}
 {% else %}
-<p><strong>읽은 장</strong>: {{ page.chapters_read }}장 (Chapter {{ page.from_chapter }}~{{ page.to_chapter }})</p>
-<p><strong>목표 달성</strong>: {% if page.chapters_read >= 3 %}✅ 달성 ({{ page.chapters_read }}장){% else %}❌ 미달성 ({{ page.chapters_read }}장 / 목표 3장){% endif %}</p>
+  {% assign read_count = page.chapters_read %}
+  {% assign unit = "장" %}
+  {% assign range = "Ch." | append: page.from_chapter | append: "~" | append: page.to_chapter %}
+  {% assign achieved = false %}
+  {% if page.chapters_read >= 3 %}{% assign achieved = true %}{% endif %}
 {% endif %}
 
-<hr>
+<a class="back" href="{{ site.baseurl }}/books/{{ page.book }}/">← {{ page.book }}으로</a>
 
-{{ content }}
+<div class="book-header">
+  <h1>{{ page.date | date: "%Y-%m-%d" }}</h1>
+  <div class="meta" style="margin-top:8px">
+    <span>{{ range }}</span>
+    {% if achieved %}
+      <span class="badge badge-green">✅ 달성 ({{ read_count }}{{ unit }})</span>
+    {% else %}
+      <span class="badge badge-red">❌ 미달성 ({{ read_count }}{{ unit }})</span>
+    {% endif %}
+  </div>
+  {% if page.memo %}<p style="margin-top:12px;color:#586069;font-size:14px">{{ page.memo }}</p>{% endif %}
+  {% if content != "" %}<hr><div class="content">{{ content }}</div>{% endif %}
+</div>

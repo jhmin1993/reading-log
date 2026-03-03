@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} - Reading Log</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f6f8fa; color: #24292e; }
+    header { background: #24292e; color: white; padding: 16px 32px; }
+    header a { color: white; text-decoration: none; font-size: 20px; font-weight: 600; }
+    main { max-width: 860px; margin: 32px auto; padding: 0 16px; }
+    h1 { font-size: 22px; margin-bottom: 16px; color: #24292e; }
+    h2 { font-size: 16px; margin-bottom: 12px; color: #586069; font-weight: 600; margin-top: 24px; }
+    .card { background: white; border: 1px solid #e1e4e8; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; transition: box-shadow .15s; }
+    .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .card-title a { color: #0366d6; text-decoration: none; }
+    .card-title a:hover { text-decoration: underline; }
+    .meta { font-size: 13px; color: #586069; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; }
+    .badge-green { background: #dcffe4; color: #22863a; }
+    .badge-red { background: #ffeef0; color: #cb2431; }
+    .badge-yellow { background: #fff3cd; color: #856404; }
+    .section { margin-bottom: 36px; }
+    .back { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 16px; color: #0366d6; text-decoration: none; font-size: 14px; }
+    .back:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid #e1e4e8; margin: 16px 0; }
+    .content { line-height: 1.7; font-size: 15px; }
+    .content p { margin-bottom: 12px; }
+    .empty { color: #586069; font-size: 14px; padding: 20px 0; }
+    .book-header { background: white; border: 1px solid #e1e4e8; border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; }
+    .book-header h1 { margin-bottom: 10px; }
+    .stat { font-size: 24px; font-weight: 700; color: #0366d6; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; border: 1px solid #e1e4e8; }
+    th, td { padding: 10px 14px; text-align: left; font-size: 14px; border-bottom: 1px solid #e1e4e8; }
+    th { background: #f6f8fa; font-weight: 600; color: #586069; }
+    tr:last-child td { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <header><a href="{{ site.baseurl }}/">📚 Reading Log</a></header>
+  <main>{{ content }}</main>
+</body>
+</html>

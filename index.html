@@ -1,0 +1,62 @@
+---
+layout: default
+title: "홈"
+---
+
+<div class="section">
+  <h1>📖 등록된 책</h1>
+  {% for book in site.books %}
+    {% assign book_logs = site.logs | where: "book", book.slug %}
+    {% assign total_read = 0 %}
+    {% if book.pages_per_day %}
+      {% for log in book_logs %}{% assign total_read = total_read | plus: log.pages_read %}{% endfor %}
+      {% assign unit = "p" %}
+      {% assign plan = book.pages_per_day | append: "p/일" %}
+    {% else %}
+      {% for log in book_logs %}{% assign total_read = total_read | plus: log.chapters_read %}{% endfor %}
+      {% assign unit = "장" %}
+      {% assign plan = book.chapters_per_day | append: "장/일" %}
+    {% endif %}
+  <div class="card">
+    <div class="card-title"><a href="{{ site.baseurl }}/books/{{ book.slug }}/">{{ book.title }}</a></div>
+    <div class="meta">
+      <span>{{ book.author }}</span>
+      <span class="badge badge-yellow">{{ plan }}</span>
+      <span>시작일 {{ book.start_date }}</span>
+      <span>누적 <strong>{{ total_read }}{{ unit }}</strong></span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="section">
+  <h1>📝 최근 독서 기록</h1>
+  {% assign recent = site.logs | sort: "date" | reverse %}
+  {% for log in recent limit:10 %}
+    {% if log.pages_read %}
+      {% assign read_count = log.pages_read %}
+      {% assign unit = "p" %}
+      {% assign range = log.from_page | append: "~" | append: log.to_page | append: "p" %}
+      {% assign achieved = false %}
+      {% if log.pages_read >= 3 %}{% assign achieved = true %}{% endif %}
+    {% else %}
+      {% assign read_count = log.chapters_read %}
+      {% assign unit = "장" %}
+      {% assign range = "Ch." | append: log.from_chapter | append: "~" | append: log.to_chapter %}
+      {% assign achieved = false %}
+      {% if log.chapters_read >= 3 %}{% assign achieved = true %}{% endif %}
+    {% endif %}
+  <div class="card">
+    <div class="card-title"><a href="{{ site.baseurl }}/logs/{{ log.slug }}/">{{ log.date | date: "%Y-%m-%d" }} — {{ log.book }}</a></div>
+    <div class="meta">
+      <span>{{ range }}</span>
+      {% if achieved %}
+        <span class="badge badge-green">✅ 달성 ({{ read_count }}{{ unit }})</span>
+      {% else %}
+        <span class="badge badge-red">❌ 미달성 ({{ read_count }}{{ unit }})</span>
+      {% endif %}
+      {% if log.memo %}<span>{{ log.memo }}</span>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
