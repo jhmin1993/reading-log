@@ -1,0 +1,13 @@
+{
+  "name": "Reading Log",
+  "short_name": "독서기록",
+  "description": "하루 독서 기록 앱",
+  "start_url": "/reading-log/",
+  "scope": "/reading-log/",
+  "display": "standalone",
+  "theme_color": "#24292e",
+  "background_color": "#f6f8fa",
+  "icons": [
+    { "src": "/reading-log/assets/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

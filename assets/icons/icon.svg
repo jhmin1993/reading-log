@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#24292e"/>
+  <!-- Book body -->
+  <rect x="120" y="100" width="240" height="300" rx="12" fill="white"/>
+  <!-- Spine -->
+  <rect x="120" y="100" width="36" height="300" rx="0" fill="#e1e4e8"/>
+  <rect x="120" y="100" width="36" height="300" rx="6" fill="#d0d7de"/>
+  <!-- Pages lines -->
+  <rect x="176" y="150" width="156" height="12" rx="6" fill="#e1e4e8"/>
+  <rect x="176" y="182" width="140" height="12" rx="6" fill="#e1e4e8"/>
+  <rect x="176" y="214" width="156" height="12" rx="6" fill="#e1e4e8"/>
+  <rect x="176" y="246" width="120" height="12" rx="6" fill="#e1e4e8"/>
+  <rect x="176" y="278" width="150" height="12" rx="6" fill="#e1e4e8"/>
+  <rect x="176" y="310" width="100" height="12" rx="6" fill="#e1e4e8"/>
+  <!-- Bookmark -->
+  <polygon points="290,100 330,100 330,160 310,145 290,160" fill="#0366d6"/>
+</svg>
